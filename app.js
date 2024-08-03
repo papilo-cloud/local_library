@@ -4,7 +4,7 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const uri = require('./uri')
-const {Schema, model, connect, set} = require('mongoose')
+const { connect, set} = require('mongoose')
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
@@ -18,15 +18,6 @@ main().catch(err => console.log(err))
 async function main(){
   await connect(uri, {dbName: 'local_library'})
 }
-
-// Define a schema
-const SomeModelSchema = new Schema({
-  a_string: String,
-  a_date: Date,
-})
-
-// Compile model from schema
-const SomeModel = model("SomeModel", SomeModelSchema)
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
