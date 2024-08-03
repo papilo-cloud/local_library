@@ -1,49 +1,13 @@
 const {Schema, model} = require("mongoose")
 
 const GenreSchema = new Schema({
-    category: {
-        fiction: {
-            type: Schema.Types.ObjectId,
-            name:{ 
-                type: String,
-                minlength: 3,
-                maxlength: 100,
-                required: true
-            },
-            ref: 'Book'
-        },
-        non_fiction: {
-            type: Schema.Types.ObjectId,
-            name:{ 
-                type: String,
-                minlength: 3,
-                maxlength: 100,
-                required: true
-            },
-            ref: 'Book'
-        },
-        romance: {
-            type: Schema.Types.ObjectId,
-            name:{ 
-                type: String,
-                minlength: 3,
-                maxlength: 100,
-                required: true
-                
-            },
-            ref: 'Book'
-        },
-        military: {
-            type: Schema.Types.ObjectId,
-            name:{ 
-                type: String,
-                minlength: 3,
-                maxlength: 100,
-                required: true
-            },
-            ref: 'Book'
-        },
+    name: {
+        type: String,
+        minLength: 3,
+        maxLength: 100,
+        required: true
     }
+        
 })
 
 GenreSchema.virtual("url").get(function () {
