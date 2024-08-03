@@ -1,17 +1,36 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const uri = require('./uri')
+const {Schema, model, connect, set} = require('mongoose')
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+const indexRouter = require('./routes/index');
+const usersRouter = require('./routes/users');
 
-var app = express();
+const app = express();
+
+// Set up mongoose connection
+set("strictQuery", false)
+
+main().catch(err => console.log(err))
+async function main(){
+  await connect(uri, {dbName: 'local_library'})
+}
+
+// Define a schema
+const SomeModelSchema = new Schema({
+  a_string: String,
+  a_date: Date,
+})
+
+// Compile model from schema
+const SomeModel = model("SomeModel", SomeModelSchema)
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+app.set('view engine', 'pug');
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -21,6 +40,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/users/cool', usersRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
