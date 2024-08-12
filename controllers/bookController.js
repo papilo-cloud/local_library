@@ -41,10 +41,21 @@ exports.book_list = asyncHandler(async (req, res, next) => {
 
 // Display detail page for a specific book.
 exports.book_detail = asyncHandler(async (req, res, next) => {
-  const singleBook = await Book.findById(req.params.id, 'title summary').exec()
+  const [book, bookInstances] = await Promise.all([
+    Book.findById(req.params.id).populate('author').populate('genre').exec(),
+    BookInstance.find({book: req.params.id}).exec()
+  ])
+
+  if (book == null) {
+    const err = new Error('Book not founs')
+    err.status = 404
+    return next(err)
+  }
+  
   res.render('book_detail', {
     title: 'Book Details',
-    book_detail: singleBook
+    book_detail: book,
+    book_instance: bookInstances
   })
 });
 
