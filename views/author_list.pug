@@ -1,0 +1,11 @@
+extends layout
+block content
+    h1= title
+    if author_list.length
+        ul
+            each val in author_list
+                li
+                    a(href=val.url) #{val.name} 
+                    | (#{val.birth_date} - #{val.death_date}) 
+    else
+        p Author list is empty.
