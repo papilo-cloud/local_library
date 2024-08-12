@@ -1,5 +1,5 @@
 const {Schema, model} = require("mongoose")
-
+const {DateTime} = require('luxon')
 const AuthorSchema = new Schema({
     first_name: {
         type: String,
@@ -23,6 +23,18 @@ AuthorSchema.virtual("name").get(function () {
     }
     return fullname
 });
+
+// Virtual for author's date of birth
+AuthorSchema.virtual('birth_date').get(function () {
+    if (this.date_of_birth)
+        return DateTime.fromJSDate(this.date_of_birth).toLocaleString(DateTime.DATE_MED)
+})
+
+// Virtual for author's date of death
+AuthorSchema.virtual('death_date').get(function () {
+    if (this.date_of_death)
+        return DateTime.fromJSDate(this.date_of_death).toLocaleString(DateTime.DATE_MED)
+})
 
 // Virtual for author's URL
 // Note: Declaring our URLs as a virtual in the schema is a good idea because
