@@ -1,5 +1,35 @@
 extends layout 
 block content
-    h1= title 
-    h3= book_detail.title 
-    p= book_detail.summary 
+    h1 Title: #{book_detail.title} 
+
+    p #[strong Author:] 
+        a(href=book_detail.author.url) #{book_detail.author.name}
+    p #[strong Summary:] #{book_detail.summary}
+    p #[strong ISBN:] #{book_detail.isbn}
+    p #[strong Genre:] 
+        each book, idx in book_detail.genre
+            a(href=book.url) #{book.name}
+            if idx < book_detail.genre.length - 1 
+                |,&nbsp;
+
+    div(style ='margin-left:20px; margin-top:20px')
+        h2(style='font-size:1.5rem') Copies
+        p= book_instance
+        each val in book_instance
+            hr
+            if val.status == 'Available'
+                p.text-success #{val.status}
+            else if val.status == 'Maintenance'
+                p.text-danger #{val.status}
+            else
+                p.text-warning #{val.status}
+
+            p #[strong Imprint:] #{val.imprint}
+            if val.status== 'Available'
+                p #[strong Due back:] #{val.due_back_formatted}
+            
+            p #[strong Id:]
+                a(href=val.url) #{val._id}
+        else 
+            p There are no copies of this book in the library 
+                
