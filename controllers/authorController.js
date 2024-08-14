@@ -1,6 +1,7 @@
 const Author = require('../models/author')
 const Book = require('../models/book')
 const asyncHandler = require('express-async-handler')
+const {body, validationResult} = require('express-validator')
 
 // Display list of all authors
 exports.author_list = asyncHandler(async (req, res, next) => {
@@ -33,13 +34,58 @@ exports.author_detail = asyncHandler(async (req, res, next) => {
 })
 
 // Display Author create form on GET
-exports.author_create_get = asyncHandler(async (req, res, next) => {
-    res.send(`NOT IMPLEMENTED: Author create GET`)
-})
+exports.author_create_get = (req, res, next) => {
+    res.render('author_form', {
+        title: 'Create Author'
+    })
+}
+
 // Handle Author create on POST
-exports.author_create_post = asyncHandler(async (req, res, next) => {
-    res.send(`NOT IMPLEMENTED: Author create POST`)
-})
+exports.author_create_post = [
+    body('fname')
+        .trim()
+        .isLength({min: 1})
+        .escape()
+        .withMessage('First name must be specified.')
+        .isAlphanumeric()
+        .withMessage('First name has non-alphanumeric characters.'),
+    body('lname')
+        .trim()
+        .isLength({min: 1})
+        .escape()
+        .withMessage('Family name must be specified.')
+        .isAlphanumeric()
+        .withMessage('Family name has non-alphanumeric characters.'),
+    body('birth')
+        .optional({values: 'falsy'})
+        .isISO8601()
+        .toDate(),
+    body('death')
+        .optional({values: 'falsy'})
+        .isISO8601()
+        .toDate(),  
+
+    asyncHandler(async (req, res, next) => {
+        const errors = validationResult(req);
+        const author = new Author({
+            first_name: req.body.fname,
+            family_name: req.body.lname,
+            date_of_birth: req.body.birth,
+            date_of_death: req.body.death
+        })
+        console.log(errors.array())
+        if (!errors.isEmpty()) {
+            res.render('author_form',{
+                title: 'Create Author',
+                author,
+                errors: errors.array()
+            })
+        }
+        else{
+            await author.save()
+            res.redirect(author.url)
+        }
+})]
 // Display Author delete form on GET
 exports.author_delete_get = asyncHandler(async (req, res, next) => {
     res.send(`NOT IMPLEMENTED: Author delete GET`)
