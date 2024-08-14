@@ -1,0 +1,14 @@
+extends layout 
+block content 
+    h1= title
+
+    form(action="", method="post") 
+        div.form-group
+            label(for="name") #[strong Genre:]
+            input#name.form-control(type="text", name="name", placeholder="Fantasy, Poetry, etc."
+                required value=(undefined===genre? '': genre.name)) 
+        button.btn.btn-primary(type="submit") Submit
+    if errors
+        ul 
+            for error in errors
+                li!= error.msg
