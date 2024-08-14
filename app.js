@@ -3,8 +3,8 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const mongoose = require('mongoose')
 const uri = require('./uri')
-const { connect, set} = require('mongoose')
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
@@ -13,11 +13,13 @@ const catalogRouter = require('./routes/catalog')
 const app = express();
 
 // Set up mongoose connection
-set("strictQuery", false)
+mongoose.set("strictQuery", false)
 
-main().catch(err => console.log(err))
-async function main(){
-  await connect(uri, {dbName: 'local_library'})
+mongoose.set("strictQuery", false);
+
+main().catch((err) => console.log(err));
+async function main() {
+  const client = await mongoose.connect(uri, {dbName: 'local_library'});
 }
 
 // view engine setup
