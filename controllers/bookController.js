@@ -117,8 +117,8 @@ exports.book_create_post = [
       title: req.body.title,
       author: req.body.author,
       summary: req.body.summary,
-      isbn: req.body.author,
-      genre: req.body.author,
+      isbn: req.body.isbn,
+      genre: req.body.genre,
     })
 
     if (!errors.isEmpty()) {
