@@ -36,6 +36,10 @@ AuthorSchema.virtual('death_date').get(function () {
         return DateTime.fromJSDate(this.date_of_death).toLocaleString(DateTime.DATE_MED)
 })
 
+AuthorSchema.virtual('lifespan').get(function () {
+    return this.birth_date +' - '+ this.death_date
+})
+
 // Virtual for author's URL
 // Note: Declaring our URLs as a virtual in the schema is a good idea because
 // then the URL for an item only ever needs to be changed in one place. 
