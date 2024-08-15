@@ -16,7 +16,7 @@ block content
                 required value=(undefined===author ? '' : author.birth) )
             label(for="death") #[strong Date of death:]
             input#death.form-control(type="date" name='death'
-                required value=(undefined===author ? '' : author.death) ) 
+                value=(undefined===author ? '' : author.death) ) 
         button.btn.btn-primary(type="submit") Submit
     
     if errors
