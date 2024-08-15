@@ -1,0 +1,17 @@
+extends layout 
+block content 
+    h1 #{title} #{genre.name}
+
+    if genre_books.length 
+        p #[strong Delete the following books before attempting to delete this author.]
+        each val in genre_books
+            dd 
+                a(href=val.url) #{val.title} 
+            dt #{val.summary}
+    else 
+        p Do you reakky want to delete this Genre?
+
+        form(method="post") 
+            div.form-group
+                input.form-control(type="hidden", name="genre", value=genre._id)
+            button.btn.btn-danger(type="submit") Delete
