@@ -1,0 +1,10 @@
+extends layout 
+block content 
+    h1 #{title}: #{book.title}
+    h3 By: #{book.author.name}
+    p= book.summary
+
+    form(method='post') 
+        div.form-group
+            input(type="hidden", name="bookid" value=book._id)
+            button.btn.btn-danger(type="submit") Delete
